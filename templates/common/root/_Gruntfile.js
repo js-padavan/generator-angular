@@ -44,8 +44,8 @@ module.exports = function (grunt) {
       js: {
         files: ['<%%= yeoman.app %>/scripts/{,*/}*.js'],
         tasks: ['newer:jshint:all'],
-        options: {
-          livereload: '<%%= connect.options.livereload %>'
+        options: { <% if(livereload) { %>
+          livereload: '<%%= connect.options.livereload %>' <% } %>
         }
       },
       jsTest: {
@@ -64,8 +64,9 @@ module.exports = function (grunt) {
         files: ['Gruntfile.js']
       },
       livereload: {
-        options: {
-          livereload: '<%%= connect.options.livereload %>'
+        options: { <% if(livereload) { %>
+          livereload: '<%%= connect.options.livereload %>', <% } else { %>
+          livereload: false <% } %>
         },
         files: [
           '<%%= yeoman.app %>/{,*/}*.html',

@@ -304,6 +304,20 @@ Generator.prototype.askForModules = function askForModules() {
   }.bind(this));
 };
 
+
+Generator.prototype.askForLivereload = function askForLivereload() {
+  var cb = this.async();
+  this.prompt([{
+    type: 'confirm',
+    name: 'livereload',
+    message: 'Would you like to use livereload?',
+    default: true
+  }], function(props) {
+    this.livereload = props.livereload;
+    cb();
+  }.bind(this));
+}
+
 Generator.prototype.readIndex = function readIndex() {
   this.ngRoute = this.env.options.ngRoute;
   this.indexFile = this.engine(this.read('app/index.html'), this);
