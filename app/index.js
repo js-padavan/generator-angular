@@ -348,6 +348,7 @@ Generator.prototype.askForLivereload = function askForLivereload() {
 
 Generator.prototype.readIndex = function readIndex() {
   this.ngRouter = this.env.options.ngRouter;
+  this.uiRouter = this.env.options.uiRouter;
   this.indexFile = this.engine(this.read('app/index.html'), this);
 };
 
