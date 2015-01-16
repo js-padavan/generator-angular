@@ -1,8 +1,8 @@
 Description:
-    Creates a new AngularJS route
+    Creates a new AngularJS route according to the used router (ngRouter, uiRouter)
 
 Example:
-    yo angular:route thing [--coffee] [--uri=path_to/thing]
+    yo angular:route thing [--coffee]
 
     This will create:
         app/scripts/controllers/thing.js

@@ -8,6 +8,22 @@ var chalk = require('chalk');
 var Generator = module.exports = function Generator() {
   yeoman.generators.NamedBase.apply(this, arguments);
 
+  this.classify = function(str) {
+    return str.split(/\.|-/).map(function(el){
+      return el[0].toUpperCase() + el.substr(1);
+    }).join('')
+  }
+
+  this.camelize = function(str) {
+    var index = 0;
+    return str.split(/\.|-/).map(function(el) {
+      index++;
+      if (index === 1)
+        return el;
+      return el[0].toUpperCase() + el.substr(1);
+    }).join('');
+  }
+
   try {
     this.appname = require(path.join(process.cwd(), 'bower.json')).name;
   } catch (e) {
@@ -17,7 +33,9 @@ var Generator = module.exports = function Generator() {
   this.scriptAppName = this._.camelize(this.appname) + angularUtils.appName(this);
 
   this.cameledName = this._.camelize(this.name);
-  this.classedName = this._.classify(this.name);
+  this.classedName = this.name.split(/\.|-/).map(function(str){
+    return str[0].toUpperCase() + str.substr(1)
+  }).join('')
 
   if (typeof this.env.options.appPath === 'undefined') {
     this.env.options.appPath = this.options.appPath;
@@ -109,7 +127,6 @@ Generator.prototype.generateSourceAndTest = function (appTemplate, testTemplate,
   if (this.generatorName.toLowerCase() === 'service') {
     this.cameledName = this.classedName;
   }
-
   this.appTemplate(appTemplate, path.join('scripts', targetDirectory, this.name));
   this.testTemplate(testTemplate, path.join(targetDirectory, this.name));
   if (!skipAdd) {

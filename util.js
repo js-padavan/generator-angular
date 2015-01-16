@@ -49,7 +49,7 @@ function rewriteFile (args) {
 
   args.haystack = fs.readFileSync(fullPath, 'utf8');
   var body = rewrite(args);
-
+  // console.log(body);
   fs.writeFileSync(fullPath, body);
 }
 

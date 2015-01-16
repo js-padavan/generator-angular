@@ -207,9 +207,12 @@ Generator.prototype.askForBootstrap = function askForBootstrap() {
 };
 
 Generator.prototype.askForModules = function askForModules() {
+
+
   var cb = this.async();
 
-  var prompts = [{
+  var prompts = [
+  {
     type: 'checkbox',
     name: 'modules',
     message: 'Which modules would you like to include?',
@@ -236,7 +239,8 @@ Generator.prototype.askForModules = function askForModules() {
       checked: false
     }, {
       value: 'routeModule',
-      name: 'angular-route.js',
+      name: 'router-module',
+      // name: 'angular-route.js',
       checked: true
     }, {
       value: 'sanitizeModule',
@@ -246,8 +250,16 @@ Generator.prototype.askForModules = function askForModules() {
       value: 'touchModule',
       name: 'angular-touch.js',
       checked: true
+    }]
+  },
+  {
+    type: 'list',
+    name: 'router',
+    message: 'Which router would you like to use?',
+    choices: ['ui-router', 'ng-router'],
+    when: function(props) {
+      return (props.modules.indexOf('routeModule') !== -1)
     }
-    ]
   }];
 
   this.prompt(prompts, function (props) {
@@ -284,8 +296,23 @@ Generator.prototype.askForModules = function askForModules() {
     }
 
     if (this.routeModule) {
-      angMods.push("'ngRoute'");
-      this.env.options.ngRoute = true;
+      this.uiRouter = false;
+      this.ngRouter = false;
+      switch(props.router) {
+        case 'ui-router':
+          console.log('ui-router');
+          this.uiRouter = true;
+          angMods.push("'ui.router'")
+          this.env.options.uiRouter = true;
+          break;
+        case 'ng-router':
+          console.log('ng-router');
+          this.ngRouter = true;
+          angMods.push("'ngRoute'");
+          this.env.options.ngRouter = true;
+          break;
+      }
+      console.log('router config ', this.ngRouter)
     }
 
     if (this.sanitizeModule) {
@@ -305,6 +332,7 @@ Generator.prototype.askForModules = function askForModules() {
 };
 
 
+
 Generator.prototype.askForLivereload = function askForLivereload() {
   var cb = this.async();
   this.prompt([{
@@ -319,7 +347,7 @@ Generator.prototype.askForLivereload = function askForLivereload() {
 }
 
 Generator.prototype.readIndex = function readIndex() {
-  this.ngRoute = this.env.options.ngRoute;
+  this.ngRouter = this.env.options.ngRouter;
   this.indexFile = this.engine(this.read('app/index.html'), this);
 };
 

@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 angular
-  .module('<%= scriptAppName %>', [<%= angularModules %>])<% if (ngRoute) { %>
+  .module('<%= scriptAppName %>', [<%= angularModules %>])<% if (ngRouter) { %>
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -19,4 +19,17 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-  })<% } %>;
+  })<% } %><% if(uiRouter) { %>
+  .config(function($stateProvider, $urlRouterProvider) {
+    //
+    // For any unmatched url, redirect to /
+    $urlRouterProvider.otherwise("/");
+    //
+    // Now set up the states
+    $stateProvider
+    .state('main', {
+      url: "/",
+      templateUrl: "views/main.html",
+      controller: 'MainCtrl'
+    })
+  })<%}%>;
